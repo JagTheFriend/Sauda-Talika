@@ -189,10 +189,15 @@ const Dashboard = () => {
             <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-orange-500 bg-clip-text text-transparent">
               My Shopping Lists
             </h1>
-            <p className="text-muted-foreground mt-2">Create, manage, and organize your shopping lists</p>
+            <p className="text-muted-foreground mt-2">
+              Create, manage, and organize your shopping lists
+            </p>
           </div>
 
-          <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+          <Dialog
+            open={isCreateDialogOpen}
+            onOpenChange={setIsCreateDialogOpen}
+          >
             <DialogTrigger asChild>
               <Button className="bg-gradient-to-r from-primary to-orange-500 hover:from-primary/90 hover:to-orange-600 text-primary-foreground">
                 <Plus className="h-4 w-4 mr-2" />
@@ -208,7 +213,9 @@ const Dashboard = () => {
               </DialogHeader>
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="listName">List Name</Label>
+                  <Label className="pb-2" htmlFor="listName">
+                    List Name
+                  </Label>
                   <Input
                     id="listName"
                     value={newListName}
@@ -217,7 +224,9 @@ const Dashboard = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="listDescription">Description (Optional)</Label>
+                  <Label className="pb-2" htmlFor="listDescription">
+                    Description (Optional)
+                  </Label>
                   <Textarea
                     id="listDescription"
                     value={newListDescription}
@@ -228,7 +237,10 @@ const Dashboard = () => {
                 </div>
               </div>
               <DialogFooter>
-                <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsCreateDialogOpen(false)}
+                >
                   Cancel
                 </Button>
                 <Button onClick={createList} disabled={!newListName.trim()}>
@@ -249,7 +261,9 @@ const Dashboard = () => {
                     <ListChecks className="h-5 w-5 text-primary-foreground" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-foreground">{lists.length}</p>
+                    <p className="text-2xl font-bold text-foreground">
+                      {lists.length}
+                    </p>
                     <p className="text-sm text-muted-foreground">Total Lists</p>
                   </div>
                 </div>
@@ -280,11 +294,17 @@ const Dashboard = () => {
                   </div>
                   <div>
                     <p className="text-2xl font-bold text-foreground">
-                      {lists.filter(list =>
-                        new Date(list.updatedAt).toDateString() === new Date().toDateString()
-                      ).length}
+                      {
+                        lists.filter(
+                          (list) =>
+                            new Date(list.updatedAt).toDateString() ===
+                            new Date().toDateString()
+                        ).length
+                      }
                     </p>
-                    <p className="text-sm text-muted-foreground">Updated Today</p>
+                    <p className="text-sm text-muted-foreground">
+                      Updated Today
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -297,8 +317,12 @@ const Dashboard = () => {
           <Card className="border-border bg-card/80 backdrop-blur-sm">
             <CardContent className="p-12 text-center">
               <ListChecks className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-              <h2 className="text-xl font-semibold text-foreground mb-2">No lists yet</h2>
-              <p className="text-muted-foreground mb-6">Create your first shopping list to get started</p>
+              <h2 className="text-xl font-semibold text-foreground mb-2">
+                No lists yet
+              </h2>
+              <p className="text-muted-foreground mb-6">
+                Create your first shopping list to get started
+              </p>
               <Button
                 onClick={() => setIsCreateDialogOpen(true)}
                 className="bg-gradient-to-r from-primary to-orange-500 hover:from-primary/90 hover:to-orange-600 text-primary-foreground"
@@ -311,13 +335,18 @@ const Dashboard = () => {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             {lists.map((list) => {
-              const stats = getCompletionStats(list)
+              const stats = getCompletionStats(list);
               return (
-                <Card key={list.id} className="border-border hover:shadow-lg transition-shadow duration-300 bg-card/80 backdrop-blur-sm">
+                <Card
+                  key={list.id}
+                  className="border-border hover:shadow-lg transition-shadow duration-300 bg-card/80 backdrop-blur-sm"
+                >
                   <CardHeader className="pb-3">
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
-                        <CardTitle className="text-lg text-foreground mb-1">{list.name}</CardTitle>
+                        <CardTitle className="text-lg text-foreground mb-1">
+                          {list.name}
+                        </CardTitle>
                         {list.description && (
                           <CardDescription className="text-sm text-muted-foreground">
                             {list.description}
@@ -345,28 +374,45 @@ const Dashboard = () => {
                             </DialogHeader>
                             <div className="space-y-4">
                               <div>
-                                <Label htmlFor="editListName">List Name</Label>
+                                <Label className="pb-2" htmlFor="editListName">
+                                  List Name
+                                </Label>
                                 <Input
                                   id="editListName"
                                   value={newListName}
-                                  onChange={(e) => setNewListName(e.target.value)}
+                                  onChange={(e) =>
+                                    setNewListName(e.target.value)
+                                  }
                                 />
                               </div>
                               <div>
-                                <Label htmlFor="editListDescription">Description</Label>
+                                <Label
+                                  className="pb-2"
+                                  htmlFor="editListDescription"
+                                >
+                                  Description
+                                </Label>
                                 <Textarea
                                   id="editListDescription"
                                   value={newListDescription}
-                                  onChange={(e) => setNewListDescription(e.target.value)}
+                                  onChange={(e) =>
+                                    setNewListDescription(e.target.value)
+                                  }
                                   className="h-20"
                                 />
                               </div>
                             </div>
                             <DialogFooter>
-                              <Button variant="outline" onClick={() => setEditingList(null)}>
+                              <Button
+                                variant="outline"
+                                onClick={() => setEditingList(null)}
+                              >
                                 Cancel
                               </Button>
-                              <Button onClick={updateList} disabled={!newListName.trim()}>
+                              <Button
+                                onClick={updateList}
+                                disabled={!newListName.trim()}
+                              >
                                 Update List
                               </Button>
                             </DialogFooter>
@@ -387,7 +433,8 @@ const Dashboard = () => {
                             <AlertDialogHeader>
                               <AlertDialogTitle>Delete List</AlertDialogTitle>
                               <AlertDialogDescription>
-                                Are you sure you want to delete "{list.name}"? This action cannot be undone.
+                                Are you sure you want to delete "{list.name}"?
+                                This action cannot be undone.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
@@ -405,13 +452,22 @@ const Dashboard = () => {
                     </div>
 
                     <div className="flex items-center gap-2 mt-3">
-                      <Badge variant="outline" className="border-primary/30 text-primary">
+                      <Badge
+                        variant="outline"
+                        className="border-primary/30 text-primary"
+                      >
                         {stats.total} items
                       </Badge>
                       {stats.total > 0 && (
                         <Badge
-                          variant={stats.percentage === 100 ? "default" : "secondary"}
-                          className={stats.percentage === 100 ? "bg-green-600 dark:bg-green-500" : ""}
+                          variant={
+                            stats.percentage === 100 ? "default" : "secondary"
+                          }
+                          className={
+                            stats.percentage === 100
+                              ? "bg-green-600 dark:bg-green-500"
+                              : ""
+                          }
                         >
                           {stats.percentage}% complete
                         </Badge>
@@ -424,7 +480,12 @@ const Dashboard = () => {
                     <div className="flex gap-2 mb-4">
                       <AutocompleteInput
                         value={newItemTexts[list.id] || ""}
-                        onChange={(value) => setNewItemTexts(prev => ({ ...prev, [list.id]: value }))}
+                        onChange={(value) =>
+                          setNewItemTexts((prev) => ({
+                            ...prev,
+                            [list.id]: value,
+                          }))
+                        }
                         onSubmit={() => addItem(list.id)}
                         suggestions={commonIngredients}
                         className="flex-1"
@@ -453,20 +514,24 @@ const Dashboard = () => {
                           >
                             <Checkbox
                               checked={item.completed}
-                              onCheckedChange={() => toggleItem(list.id, item.id)}
+                              onCheckedChange={() =>
+                                toggleItem(list.id, item.id)
+                              }
                             />
                             <span
                               className={`flex-1 text-sm ${
                                 item.completed
-                                  ? 'line-through text-muted-foreground'
-                                  : 'text-foreground'
+                                  ? "line-through text-muted-foreground"
+                                  : "text-foreground"
                               }`}
                             >
                               {item.text}
                             </span>
                             <MobileItemEditor
                               item={item}
-                              onUpdate={(itemId, newText) => updateItem(list.id, itemId, newText)}
+                              onUpdate={(itemId, newText) =>
+                                updateItem(list.id, itemId, newText)
+                              }
                               onDelete={(itemId) => deleteItem(list.id, itemId)}
                             />
                           </div>
@@ -487,13 +552,13 @@ const Dashboard = () => {
                     )}
                   </CardContent>
                 </Card>
-              )
+              );
             })}
           </div>
         )}
       </div>
     </div>
-  )
+  );
 }
 
 export default Dashboard

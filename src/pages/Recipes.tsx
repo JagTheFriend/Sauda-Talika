@@ -212,11 +212,12 @@ const Recipes = () => {
           <CardContent>
             <div className="grid grid-cols-1 items-center gap-4">
               <div>
-                <Label htmlFor="dish">Dish Name</Label>
+                <Label htmlFor="dish" className="text-gray-800 pb-2">
+                  Dish Name
+                </Label>
                 <Input
                   id="dish"
                   placeholder="e.g., Paneer Tikka Masala"
-                  className="pt-2"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && generateRecipe()}
@@ -240,6 +241,9 @@ const Recipes = () => {
                     </>
                   )}
                 </Button>
+                <Label htmlFor="dish" className="text-gray-400 text-[10px]">
+                  Content Generated May Not Be Accurate. Proceed with Caution
+                </Label>
               </div>
             </div>
           </CardContent>

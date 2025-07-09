@@ -68,9 +68,7 @@ export function AppSidebar() {
                   <SidebarMenuButton asChild>
                     <NavLink
                       to={item.url}
-                      className={`${getNavClass(
-                        item.url
-                      )} transition-all duration-200 rounded-lg`}
+                      className={`${getNavClass(item.url)} rounded-lg`}
                     >
                       <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>

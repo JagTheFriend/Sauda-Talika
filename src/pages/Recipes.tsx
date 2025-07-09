@@ -23,8 +23,8 @@ interface Recipe {
 
 const Recipes = () => {
   const [searchQuery, setSearchQuery] = useState("")
-  const [selectedCuisine, setSelectedCuisine] = useState("")
-  const [selectedDifficulty, setSelectedDifficulty] = useState("")
+  const [selectedCuisine, setSelectedCuisine] = useState("all")
+  const [selectedDifficulty, setSelectedDifficulty] = useState("all")
   const [isLoading, setIsLoading] = useState(false)
   const [currentRecipe, setCurrentRecipe] = useState<Recipe | null>(null)
   const [newListName, setNewListName] = useState("")
@@ -124,7 +124,7 @@ const Recipes = () => {
       ],
       prepTime: 35,
       servings: 4,
-      difficulty: selectedDifficulty || "Medium"
+      difficulty: selectedDifficulty === "all" ? "Medium" : selectedDifficulty
     }
 
     setCurrentRecipe(mockRecipe)
@@ -139,34 +139,43 @@ const Recipes = () => {
   const addIngredientsToList = () => {
     if (!currentRecipe || !newListName.trim()) return
 
-    // Get existing lists from localStorage
-    const existingLists = JSON.parse(localStorage.getItem("saudaTalikaLists") || "[]")
-    
-    // Create new list with recipe ingredients
-    const newList = {
-      id: Date.now().toString(),
-      name: newListName,
-      description: `Ingredients for ${currentRecipe.name}`,
-      items: currentRecipe.ingredients.map(ingredient => ({
-        id: Date.now().toString() + Math.random(),
-        text: ingredient,
-        completed: false
-      })),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+    try {
+      // Get existing lists from localStorage
+      const existingLists = JSON.parse(localStorage.getItem("saudaTalikaLists") || "[]")
+      
+      // Create new list with recipe ingredients
+      const newList = {
+        id: Date.now().toString(),
+        name: newListName,
+        description: `Ingredients for ${currentRecipe.name}`,
+        items: currentRecipe.ingredients.map(ingredient => ({
+          id: Date.now().toString() + Math.random(),
+          text: ingredient,
+          completed: false
+        })),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }
+
+      // Save updated lists
+      const updatedLists = [...existingLists, newList]
+      localStorage.setItem("saudaTalikaLists", JSON.stringify(updatedLists))
+
+      setIsAddToListDialogOpen(false)
+      setNewListName("")
+      
+      toast({
+        title: "List created!",
+        description: `"${newListName}" has been created with all recipe ingredients.`,
+      })
+    } catch (error) {
+      console.error("Error saving to localStorage:", error)
+      toast({
+        title: "Error",
+        description: "Failed to save the list. Please try again.",
+        variant: "destructive"
+      })
     }
-
-    // Save updated lists
-    const updatedLists = [...existingLists, newList]
-    localStorage.setItem("saudaTalikaLists", JSON.stringify(updatedLists))
-
-    setIsAddToListDialogOpen(false)
-    setNewListName("")
-    
-    toast({
-      title: "List created!",
-      description: `"${newListName}" has been created with all recipe ingredients.`,
-    })
   }
 
   const cuisineTypes = [
@@ -220,7 +229,7 @@ const Recipes = () => {
                     <SelectValue placeholder="Any cuisine" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Any cuisine</SelectItem>
+                    <SelectItem value="all">Any cuisine</SelectItem>
                     {cuisineTypes.map(cuisine => (
                       <SelectItem key={cuisine} value={cuisine.toLowerCase()}>
                         {cuisine}
@@ -237,7 +246,7 @@ const Recipes = () => {
                     <SelectValue placeholder="Any difficulty" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Any difficulty</SelectItem>
+                    <SelectItem value="all">Any difficulty</SelectItem>
                     {difficultyLevels.map(level => (
                       <SelectItem key={level} value={level.toLowerCase()}>
                         {level}

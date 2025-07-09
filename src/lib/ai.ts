@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const aiPrompt = `
 Generate a recipe for the dish [Dish Name]. It should should include:
 
@@ -40,4 +42,39 @@ Instructions:
 4. [etc.]
 
 ---
-`
+`;
+
+const url = "https://openrouter.ai/api/v1/chat/completions";
+const headers = {
+  Authorization: `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
+  "Content-Type": "application/json",
+};
+
+export async function generateRecipe(dishName: string) {
+  const payload = {
+    model: [
+      "deepseek/deepseek-r1-0528",
+      "google/gemma-3n-e4b-it",
+      "mistralai/mistral-small-3.2-24b-instruct",
+      "openrouter/cypher-alpha",
+    ],
+    messages: [
+      {
+        role: "system",
+        content: aiPrompt,
+      },
+      {
+        role: "user",
+        content: `Dish name is "${dishName}"`,
+      },
+    ],
+  };
+
+  const response = await axios.post(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(payload),
+  });
+  console.log(response);
+  return response.data;
+}

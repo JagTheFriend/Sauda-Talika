@@ -1,4 +1,5 @@
-import axios from "axios";
+import { Recipe } from "@/pages/Recipes";
+import { extractRecipeData } from "./utils";
 
 const aiPrompt = `
 Generate a recipe for the dish [Dish Name]. It should should include:
@@ -15,7 +16,7 @@ Use the following template for the output:
 
 [Dish Name]
 
----
+----
 
 [A brief description of the dish.]
 
@@ -23,7 +24,7 @@ Use the following template for the output:
 * Serves: [X]
 * Difficulty: [Level]
 
----
+----
 
 Ingredients:
 
@@ -32,7 +33,7 @@ Ingredients:
 * [Ingredient 3]
 * [etc.]
 
----
+----
 
 Instructions:
 
@@ -41,7 +42,10 @@ Instructions:
 3. [Instruction step 3]
 4. [etc.]
 
----
+----
+
+NO NEED TO GIVE REASONING.
+SEPARATE EACH SECTION WITH "----".
 `;
 
 const url = "https://openrouter.ai/api/v1/chat/completions";
@@ -50,14 +54,9 @@ const headers = {
   "Content-Type": "application/json",
 };
 
-export async function generateRecipe(dishName: string) {
+export async function generateRecipe(dishName: string): Promise<Recipe> {
   const payload = {
-    model: [
-      "deepseek/deepseek-r1-0528",
-      "google/gemma-3n-e4b-it",
-      "mistralai/mistral-small-3.2-24b-instruct",
-      "openrouter/cypher-alpha",
-    ],
+    model: "tencent/hunyuan-a13b-instruct:free",
     messages: [
       {
         role: "system",
@@ -68,13 +67,15 @@ export async function generateRecipe(dishName: string) {
         content: `Dish name is "${dishName}"`,
       },
     ],
+    stream: false,
   };
 
-  const response = await axios.post(url, {
+  const response = await fetch(url, {
     method: "POST",
     headers,
     body: JSON.stringify(payload),
   });
-  console.log(response);
-  return response.data;
+  const parsedData = await response.json();
+  const messageContent = parsedData.choices[0].message.content;
+  return extractRecipeData(messageContent);
 }

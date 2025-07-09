@@ -31,49 +31,16 @@ const App = () => (
               <div className="flex-1 flex flex-col">
                 <Header />
                 <main className="flex-1">
-                  <Routes>
-                    <Route path="/" element={<Index />} />
-                    <Route
-                      path="/about"
-                      element={
-                        <LogoBackground>
-                          <About />
-                        </LogoBackground>
-                      }
-                    />
-                    <Route
-                      path="/contact"
-                      element={
-                        <LogoBackground>
-                          <Contact />
-                        </LogoBackground>
-                      }
-                    />
-                    <Route
-                      path="/dashboard"
-                      element={
-                        <LogoBackground>
-                          <Dashboard />
-                        </LogoBackground>
-                      }
-                    />
-                    <Route
-                      path="/recipes"
-                      element={
-                        <LogoBackground>
-                          <Recipes />
-                        </LogoBackground>
-                      }
-                    />
-                    <Route
-                      path="*"
-                      element={
-                        <LogoBackground>
-                          <NotFound />
-                        </LogoBackground>
-                      }
-                    />
-                  </Routes>
+                  <LogoBackground>
+                    <Routes>
+                      <Route path="/" element={<Index />} />
+                      <Route path="/about" element={<About />} />
+                      <Route path="/contact" element={<Contact />} />
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="/recipes" element={<Recipes />} />
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </LogoBackground>
                 </main>
               </div>
             </div>

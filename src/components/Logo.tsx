@@ -30,11 +30,11 @@ export const LogoBackground = ({ children }: { children: React.ReactNode }) => {
     theme === "dark" ? "/app-icon/dark.png" : "/app-icon/light.png";
 
   return (
-    <div className="h-full w-full z-0">
+    <div className="h-full w-full z-0 relative">
       <img
         src={appIcon}
         alt="Sauda Talika Logo Background"
-        className="h-full w-full object-contain opacity-10 aspect-square static"
+        className="fixed opacity-15 -z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
       />
       <div className="relative flex items-center justify-center h-full w-full z-10">
         {children}

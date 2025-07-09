@@ -1,15 +1,14 @@
 
-import { useState } from "react"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Badge } from "@/components/ui/badge"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { ChefHat, Clock, Users, Plus, Sparkles, ListPlus } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import { ChefHat, Clock, ListPlus, Sparkles, Users } from "lucide-react"
+import { useState } from "react"
 
 interface Recipe {
   name: string
@@ -94,10 +93,10 @@ const Recipes = () => {
     }
 
     setIsLoading(true)
-    
+
     // Simulate AI recipe generation
     await new Promise(resolve => setTimeout(resolve, 2000))
-    
+
     // For demo purposes, return a mock recipe based on search
     const mockRecipe: Recipe = {
       name: searchQuery,
@@ -129,7 +128,7 @@ const Recipes = () => {
 
     setCurrentRecipe(mockRecipe)
     setIsLoading(false)
-    
+
     toast({
       title: "Recipe generated!",
       description: `Found a great ${searchQuery} recipe for you.`,
@@ -142,7 +141,7 @@ const Recipes = () => {
     try {
       // Get existing lists from localStorage
       const existingLists = JSON.parse(localStorage.getItem("saudaTalikaLists") || "[]")
-      
+
       // Create new list with recipe ingredients
       const newList = {
         id: Date.now().toString(),
@@ -163,7 +162,7 @@ const Recipes = () => {
 
       setIsAddToListDialogOpen(false)
       setNewListName("")
-      
+
       toast({
         title: "List created!",
         description: `"${newListName}" has been created with all recipe ingredients.`,
@@ -179,7 +178,7 @@ const Recipes = () => {
   }
 
   const cuisineTypes = [
-    "Italian", "Thai", "Indian", "Mexican", "Chinese", "Japanese", 
+    "Italian", "Thai", "Indian", "Mexican", "Chinese", "Japanese",
     "French", "Mediterranean", "American", "Korean"
   ]
 
@@ -221,7 +220,7 @@ const Recipes = () => {
                   onKeyDown={(e) => e.key === 'Enter' && generateRecipe()}
                 />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="cuisine">Cuisine Type (Optional)</Label>
                 <Select value={selectedCuisine} onValueChange={setSelectedCuisine}>
@@ -238,7 +237,7 @@ const Recipes = () => {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="difficulty">Difficulty</Label>
                 <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
@@ -256,8 +255,8 @@ const Recipes = () => {
                 </Select>
               </div>
             </div>
-            
-            <Button 
+
+            <Button
               onClick={generateRecipe}
               disabled={isLoading || !searchQuery.trim()}
               className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white"
@@ -290,7 +289,7 @@ const Recipes = () => {
                     {currentRecipe.description}
                   </CardDescription>
                 </div>
-                
+
                 <Dialog open={isAddToListDialogOpen} onOpenChange={setIsAddToListDialogOpen}>
                   <DialogTrigger asChild>
                     <Button className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white">
@@ -327,7 +326,7 @@ const Recipes = () => {
                   </DialogContent>
                 </Dialog>
               </div>
-              
+
               <div className="flex flex-wrap gap-2 mt-4">
                 <Badge variant="outline" className="border-orange-300 text-orange-600">
                   <Clock className="h-3 w-3 mr-1" />
@@ -342,7 +341,7 @@ const Recipes = () => {
                 </Badge>
               </div>
             </CardHeader>
-            
+
             <CardContent>
               <div className="grid md:grid-cols-2 gap-8">
                 {/* Ingredients */}
@@ -357,7 +356,7 @@ const Recipes = () => {
                     ))}
                   </ul>
                 </div>
-                
+
                 {/* Instructions */}
                 <div>
                   <h3 className="text-lg font-semibold text-gray-800 mb-4">Instructions</h3>
@@ -379,7 +378,7 @@ const Recipes = () => {
 
         {/* Popular Recipes */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">Popular Recipes</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">Past Recipes</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {mockRecipes.map((recipe, index) => (
               <Card key={index} className="border-orange-200 hover:shadow-lg transition-shadow duration-300 bg-white/80">
@@ -398,7 +397,7 @@ const Recipes = () => {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <Button 
+                  <Button
                     onClick={() => setCurrentRecipe(recipe)}
                     variant="outline"
                     className="w-full border-orange-300 text-orange-600 hover:bg-orange-50"

@@ -76,10 +76,10 @@ export async function generateRecipe(dishName: string): Promise<Recipe> {
   const response = await fetch(url, {
     method: "POST",
     headers,
+    cache: "force-cache",
     body: JSON.stringify(payload),
   });
   const parsedData = await response.json();
   const messageContent = parsedData.choices[0].message.content;
-  console.log(messageContent);
   return extractRecipeData(messageContent);
 }

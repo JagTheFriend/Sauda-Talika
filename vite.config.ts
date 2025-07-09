@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => ({
     mode === "development" && componentTagger(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.svg", "robots.txt", "apple-touch-icon.png"],
+      includeAssets: ["/app-icon/light.png", "/app-icon/dark.png"],
       manifest: {
         name: "Sauda Talika",
         short_name: "Sauda Talika",
@@ -24,7 +24,6 @@ export default defineConfig(({ mode }) => ({
         theme_color: "#ffffff",
         background_color: "#ffffff",
         display: "standalone",
-        scope: "/",
         start_url: "/",
         icons: [
           {
@@ -36,12 +35,6 @@ export default defineConfig(({ mode }) => ({
             src: "/app-icon/pwa-512x512.png",
             sizes: "512x512",
             type: "image/png",
-          },
-          {
-            src: "/app-icon/maskable-icon-512x512.png",
-            sizes: "512x512",
-            type: "image/png",
-            purpose: "any maskable",
           },
         ],
       },

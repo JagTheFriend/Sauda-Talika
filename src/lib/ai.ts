@@ -45,6 +45,9 @@ Instructions:
 ----
 
 NO NEED TO GIVE REASONING.
+DO NOT INCLUDE ANYTHING ELSE OTHER THAN THE ABOVE LIST.
+DO NOT USE MARKDOWN OR HTML TAGS. EXCEPT FOR THE LIST.
+DO NOT INCLUDE HEADERS OR ANYTHING ELSE OTHER THAN THE ABOVE LIST.
 SEPARATE EACH SECTION WITH "----".
 `;
 
@@ -56,7 +59,7 @@ const headers = {
 
 export async function generateRecipe(dishName: string): Promise<Recipe> {
   const payload = {
-    model: "tencent/hunyuan-a13b-instruct:free",
+    model: "deepseek/deepseek-r1-0528-qwen3-8b:free",
     messages: [
       {
         role: "system",
@@ -77,5 +80,6 @@ export async function generateRecipe(dishName: string): Promise<Recipe> {
   });
   const parsedData = await response.json();
   const messageContent = parsedData.choices[0].message.content;
+  console.log(messageContent);
   return extractRecipeData(messageContent);
 }

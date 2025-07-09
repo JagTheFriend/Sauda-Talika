@@ -59,7 +59,7 @@ const headers = {
 
 export async function generateRecipe(dishName: string): Promise<Recipe> {
   const payload = {
-    model: "deepseek/deepseek-r1-0528-qwen3-8b:free",
+    model: "google/gemini-2.0-flash-exp:free",
     messages: [
       {
         role: "system",

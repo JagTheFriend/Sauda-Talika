@@ -30,6 +30,12 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
 import { generateRecipe } from "@/lib/ai";
 import {
@@ -126,16 +132,16 @@ function ViewRecipe({
   addIngredientsToList: () => void;
 }) {
   return (
-    <Dialog
+    <Sheet
       open={!!currentRecipe}
       onOpenChange={(e) => {
         setCurrentRecipe(null);
       }}
     >
-      <DialogContent className="min-w-full">
-        <DialogTitle className="hidden">
-          Current Viewing {currentRecipe?.name}
-        </DialogTitle>
+      <SheetContent className="min-w-full overflow-auto">
+        <SheetHeader className="hidden">
+          <SheetTitle>Current Viewing {currentRecipe?.name}</SheetTitle>
+        </SheetHeader>
         <Card className="light:border-orange-200 bg-white/80 mb-8 dark:bg-background/90 backdrop-blur-sm">
           <CardHeader>
             <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
@@ -261,8 +267,8 @@ function ViewRecipe({
             </div>
           </CardContent>
         </Card>
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
   );
 }
 

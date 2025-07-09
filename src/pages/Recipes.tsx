@@ -1,4 +1,15 @@
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,7 +32,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { generateRecipe } from "@/lib/ai";
-import { ChefHat, Clock, ListPlus, Sparkles, Users } from "lucide-react";
+import {
+  ChefHat,
+  Clock,
+  ListPlus,
+  Sparkles,
+  Trash2,
+  Users,
+} from "lucide-react";
 import { useState } from "react";
 
 export interface Recipe {
@@ -32,6 +50,62 @@ export interface Recipe {
   prepTime: number;
   servings: number;
   difficulty: string;
+}
+
+function DeleteRecipe({
+  index,
+  pastRecipes,
+  recipe,
+}: {
+  recipe: Recipe;
+  index: number;
+  pastRecipes: Recipe[];
+}) {
+  const { toast } = useToast();
+
+  const deleteRecipe = (index: number) => {
+    const recipeToDelete = pastRecipes[index];
+    pastRecipes.splice(index, 1);
+    localStorage.setItem(
+      "saudaTalikaPastRecipies",
+      JSON.stringify(pastRecipes)
+    );
+    toast({
+      title: "Recipe deleted!",
+      description: `"${recipeToDelete.name}" has been removed.`,
+    });
+  };
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-8 w-8 p-0 hover:bg-destructive/10"
+        >
+          <Trash2 className="h-4 w-4 text-destructive" />
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Delete Recipe</AlertDialogTitle>
+          <AlertDialogDescription>
+            Are you sure you want to delete "{recipe.name}"? This action cannot
+            be undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={() => deleteRecipe(index)}
+            className="bg-destructive hover:bg-destructive/90"
+          >
+            Delete
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
 }
 
 const Recipes = () => {
@@ -225,7 +299,9 @@ const Recipes = () => {
                     </DialogHeader>
                     <div className="space-y-4">
                       <div>
-                        <Label htmlFor="listName">List Name</Label>
+                        <Label htmlFor="listName" className="pb-2">
+                          List Name
+                        </Label>
                         <Input
                           id="listName"
                           value={newListName}
@@ -349,6 +425,11 @@ const Recipes = () => {
                       <Users className="h-3 w-3 mr-1" />
                       Serves {recipe.servings}
                     </Badge>
+                    <DeleteRecipe
+                      recipe={recipe}
+                      index={index}
+                      pastRecipes={pastRecipes}
+                    />
                   </div>
                 </CardHeader>
                 <CardContent>

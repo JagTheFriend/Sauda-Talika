@@ -108,6 +108,164 @@ function DeleteRecipe({
   );
 }
 
+function ViewRecipe({
+  currentRecipe,
+  setCurrentRecipe,
+  isAddToListDialogOpen,
+  setIsAddToListDialogOpen,
+  newListName,
+  setNewListName,
+  addIngredientsToList,
+}: {
+  currentRecipe: Recipe;
+  setCurrentRecipe: (recipe: Recipe) => void;
+  isAddToListDialogOpen: boolean;
+  setIsAddToListDialogOpen: (open: boolean) => void;
+  newListName: string;
+  setNewListName: (name: string) => void;
+  addIngredientsToList: () => void;
+}) {
+  return (
+    <Dialog
+      open={!!currentRecipe}
+      onOpenChange={(e) => {
+        setCurrentRecipe(null);
+      }}
+    >
+      <DialogContent className="min-w-full">
+        <DialogTitle className="hidden">
+          Current Viewing {currentRecipe?.name}
+        </DialogTitle>
+        <Card className="light:border-orange-200 bg-white/80 mb-8 dark:bg-background/90 backdrop-blur-sm">
+          <CardHeader>
+            <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+              <div>
+                <CardTitle className="text-2xl text-gray-800 mb-2 dark:text-white/90">
+                  {currentRecipe.name}
+                </CardTitle>
+                <CardDescription className="text-gray-600 dark:text-white/70">
+                  {currentRecipe.description}
+                </CardDescription>
+              </div>
+
+              <Dialog
+                open={isAddToListDialogOpen}
+                onOpenChange={setIsAddToListDialogOpen}
+              >
+                <DialogTrigger asChild>
+                  <Button className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white">
+                    <ListPlus className="h-4 w-4 mr-2" />
+                    Add to List
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Create Shopping List</DialogTitle>
+                    <DialogDescription>
+                      All recipe ingredients will be added to a new shopping
+                      list.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="listName" className="pb-2">
+                        List Name
+                      </Label>
+                      <Input
+                        id="listName"
+                        value={newListName}
+                        onChange={(e) => setNewListName(e.target.value)}
+                        placeholder={`Ingredients for ${currentRecipe.name}`}
+                      />
+                    </div>
+                  </div>
+                  <DialogFooter>
+                    <Button
+                      variant="outline"
+                      onClick={() => setIsAddToListDialogOpen(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      onClick={addIngredientsToList}
+                      disabled={!newListName.trim()}
+                    >
+                      Create List
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            <div className="flex flex-wrap gap-2 mt-4">
+              <Badge
+                variant="outline"
+                className="border-orange-300 text-orange-600"
+              >
+                <Clock className="h-3 w-3 mr-1" />
+                {currentRecipe.prepTime} mins
+              </Badge>
+              <Badge
+                variant="outline"
+                className="border-orange-300 text-orange-600"
+              >
+                <Users className="h-3 w-3 mr-1" />
+                Serves {currentRecipe.servings}
+              </Badge>
+              <Badge
+                variant="outline"
+                className="border-orange-300 text-orange-600"
+              >
+                {currentRecipe.difficulty}
+              </Badge>
+            </div>
+          </CardHeader>
+
+          <CardContent>
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Ingredients */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-4 dark:text-white/90">
+                  Ingredients
+                </h3>
+                <ul className="space-y-2">
+                  {currentRecipe.ingredients.map((ingredient, index) => (
+                    <li key={index} className="flex items-start gap-2">
+                      <span className="text-orange-600 mt-1">•</span>
+                      <span className="text-gray-700 dark:text-white/80">
+                        {ingredient}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Instructions */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-4 dark:text-white/90">
+                  Instructions
+                </h3>
+                <ol className="space-y-3">
+                  {currentRecipe.instructions.map((instruction, index) => (
+                    <li key={index} className="flex gap-3">
+                      <span className="flex-shrink-0 w-6 h-6 bg-gradient-to-r from-orange-500 to-red-500 text-white text-sm font-semibold rounded-full flex items-center justify-center">
+                        {index + 1}
+                      </span>
+                      <span className="text-gray-700 text-sm dark:text-white/80">
+                        {instruction}
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 const Recipes = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -267,134 +425,18 @@ const Recipes = () => {
 
         {/* Generated Recipe */}
         {currentRecipe && (
-          <Card className="light:border-orange-200 bg-white/80 mb-8 dark:bg-background/90 backdrop-blur-sm">
-            <CardHeader>
-              <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
-                <div>
-                  <CardTitle className="text-2xl text-gray-800 mb-2 dark:text-white/90">
-                    {currentRecipe.name}
-                  </CardTitle>
-                  <CardDescription className="text-gray-600 dark:text-white/70">
-                    {currentRecipe.description}
-                  </CardDescription>
-                </div>
-
-                <Dialog
-                  open={isAddToListDialogOpen}
-                  onOpenChange={setIsAddToListDialogOpen}
-                >
-                  <DialogTrigger asChild>
-                    <Button className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white">
-                      <ListPlus className="h-4 w-4 mr-2" />
-                      Add to List
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Create Shopping List</DialogTitle>
-                      <DialogDescription>
-                        All recipe ingredients will be added to a new shopping
-                        list.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="space-y-4">
-                      <div>
-                        <Label htmlFor="listName" className="pb-2">
-                          List Name
-                        </Label>
-                        <Input
-                          id="listName"
-                          value={newListName}
-                          onChange={(e) => setNewListName(e.target.value)}
-                          placeholder={`Ingredients for ${currentRecipe.name}`}
-                        />
-                      </div>
-                    </div>
-                    <DialogFooter>
-                      <Button
-                        variant="outline"
-                        onClick={() => setIsAddToListDialogOpen(false)}
-                      >
-                        Cancel
-                      </Button>
-                      <Button
-                        onClick={addIngredientsToList}
-                        disabled={!newListName.trim()}
-                      >
-                        Create List
-                      </Button>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
-              </div>
-
-              <div className="flex flex-wrap gap-2 mt-4">
-                <Badge
-                  variant="outline"
-                  className="border-orange-300 text-orange-600"
-                >
-                  <Clock className="h-3 w-3 mr-1" />
-                  {currentRecipe.prepTime} mins
-                </Badge>
-                <Badge
-                  variant="outline"
-                  className="border-orange-300 text-orange-600"
-                >
-                  <Users className="h-3 w-3 mr-1" />
-                  Serves {currentRecipe.servings}
-                </Badge>
-                <Badge
-                  variant="outline"
-                  className="border-orange-300 text-orange-600"
-                >
-                  {currentRecipe.difficulty}
-                </Badge>
-              </div>
-            </CardHeader>
-
-            <CardContent>
-              <div className="grid md:grid-cols-2 gap-8">
-                {/* Ingredients */}
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4 dark:text-white/90">
-                    Ingredients
-                  </h3>
-                  <ul className="space-y-2">
-                    {currentRecipe.ingredients.map((ingredient, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <span className="text-orange-600 mt-1">•</span>
-                        <span className="text-gray-700 dark:text-white/80">
-                          {ingredient}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Instructions */}
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4 dark:text-white/90">
-                    Instructions
-                  </h3>
-                  <ol className="space-y-3">
-                    {currentRecipe.instructions.map((instruction, index) => (
-                      <li key={index} className="flex gap-3">
-                        <span className="flex-shrink-0 w-6 h-6 bg-gradient-to-r from-orange-500 to-red-500 text-white text-sm font-semibold rounded-full flex items-center justify-center">
-                          {index + 1}
-                        </span>
-                        <span className="text-gray-700 text-sm dark:text-white/80">
-                          {instruction}
-                        </span>
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <ViewRecipe
+            currentRecipe={currentRecipe}
+            setCurrentRecipe={setCurrentRecipe}
+            isAddToListDialogOpen={isAddToListDialogOpen}
+            setIsAddToListDialogOpen={setIsAddToListDialogOpen}
+            newListName={newListName}
+            setNewListName={setNewListName}
+            addIngredientsToList={addIngredientsToList}
+          />
         )}
 
-        {/* Popular Recipes */}
+        {/* Past Recipes */}
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-800 mb-6 dark:text-white/90">
             Past Recipes

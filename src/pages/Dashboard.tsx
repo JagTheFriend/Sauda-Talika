@@ -1,19 +1,19 @@
 
-import { useState, useEffect } from "react"
+import AutocompleteInput from "@/components/AutocompleteInput"
+import { MobileItemEditor } from "@/components/MobileItemEditor"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
-import { Plus, Edit2, Trash2, ListChecks, Calendar, ShoppingCart } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
-import AutocompleteInput from "@/components/AutocompleteInput"
-import { commonIngredients } from "@/data/commonIngredients"
 import { Input } from "@/components/ui/input"
-import { MobileItemEditor } from "@/components/MobileItemEditor"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { commonIngredients } from "@/data/commonIngredients"
+import { useToast } from "@/hooks/use-toast"
+import { Calendar, Edit2, ListChecks, Plus, ShoppingCart, Trash2 } from "lucide-react"
+import { useEffect, useState } from "react"
 
 interface ListItem {
   id: string
@@ -68,7 +68,7 @@ const Dashboard = () => {
     setNewListName("")
     setNewListDescription("")
     setIsCreateDialogOpen(false)
-    
+
     toast({
       title: "List created!",
       description: `"${newListName}" has been added to your lists.`,
@@ -78,8 +78,8 @@ const Dashboard = () => {
   const updateList = () => {
     if (!editingList || !newListName.trim()) return
 
-    setLists(prev => prev.map(list => 
-      list.id === editingList.id 
+    setLists(prev => prev.map(list =>
+      list.id === editingList.id
         ? { ...list, name: newListName, description: newListDescription, updatedAt: new Date().toISOString() }
         : list
     ))
@@ -87,7 +87,7 @@ const Dashboard = () => {
     setEditingList(null)
     setNewListName("")
     setNewListDescription("")
-    
+
     toast({
       title: "List updated!",
       description: "Your list has been successfully updated.",
@@ -97,7 +97,7 @@ const Dashboard = () => {
   const deleteList = (listId: string) => {
     const listToDelete = lists.find(list => list.id === listId)
     setLists(prev => prev.filter(list => list.id !== listId))
-    
+
     toast({
       title: "List deleted!",
       description: `"${listToDelete?.name}" has been removed.`,
@@ -114,8 +114,8 @@ const Dashboard = () => {
       completed: false
     }
 
-    setLists(prev => prev.map(list => 
-      list.id === listId 
+    setLists(prev => prev.map(list =>
+      list.id === listId
         ? { ...list, items: [...list.items, newItem], updatedAt: new Date().toISOString() }
         : list
     ))
@@ -124,11 +124,11 @@ const Dashboard = () => {
   }
 
   const toggleItem = (listId: string, itemId: string) => {
-    setLists(prev => prev.map(list => 
-      list.id === listId 
+    setLists(prev => prev.map(list =>
+      list.id === listId
         ? {
-            ...list, 
-            items: list.items.map(item => 
+            ...list,
+            items: list.items.map(item =>
               item.id === itemId ? { ...item, completed: !item.completed } : item
             ),
             updatedAt: new Date().toISOString()
@@ -138,18 +138,18 @@ const Dashboard = () => {
   }
 
   const updateItem = (listId: string, itemId: string, newText: string) => {
-    setLists(prev => prev.map(list => 
-      list.id === listId 
+    setLists(prev => prev.map(list =>
+      list.id === listId
         ? {
-            ...list, 
-            items: list.items.map(item => 
+            ...list,
+            items: list.items.map(item =>
               item.id === itemId ? { ...item, text: newText } : item
             ),
             updatedAt: new Date().toISOString()
           }
         : list
     ))
-    
+
     toast({
       title: "Item updated!",
       description: "Your item has been successfully updated.",
@@ -157,10 +157,10 @@ const Dashboard = () => {
   }
 
   const deleteItem = (listId: string, itemId: string) => {
-    setLists(prev => prev.map(list => 
-      list.id === listId 
-        ? { 
-            ...list, 
+    setLists(prev => prev.map(list =>
+      list.id === listId
+        ? {
+            ...list,
             items: list.items.filter(item => item.id !== itemId),
             updatedAt: new Date().toISOString()
           }
@@ -191,7 +191,7 @@ const Dashboard = () => {
             </h1>
             <p className="text-muted-foreground mt-2">Create, manage, and organize your shopping lists</p>
           </div>
-          
+
           <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
             <DialogTrigger asChild>
               <Button className="bg-gradient-to-r from-primary to-orange-500 hover:from-primary/90 hover:to-orange-600 text-primary-foreground">
@@ -255,7 +255,7 @@ const Dashboard = () => {
                 </div>
               </CardContent>
             </Card>
-            
+
             <Card className="border-border bg-card/80 backdrop-blur-sm">
               <CardContent className="p-6">
                 <div className="flex items-center gap-3">
@@ -271,7 +271,7 @@ const Dashboard = () => {
                 </div>
               </CardContent>
             </Card>
-            
+
             <Card className="border-border bg-card/80 backdrop-blur-sm">
               <CardContent className="p-6">
                 <div className="flex items-center gap-3">
@@ -280,7 +280,7 @@ const Dashboard = () => {
                   </div>
                   <div>
                     <p className="text-2xl font-bold text-foreground">
-                      {lists.filter(list => 
+                      {lists.filter(list =>
                         new Date(list.updatedAt).toDateString() === new Date().toDateString()
                       ).length}
                     </p>
@@ -299,7 +299,7 @@ const Dashboard = () => {
               <ListChecks className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
               <h2 className="text-xl font-semibold text-foreground mb-2">No lists yet</h2>
               <p className="text-muted-foreground mb-6">Create your first shopping list to get started</p>
-              <Button 
+              <Button
                 onClick={() => setIsCreateDialogOpen(true)}
                 className="bg-gradient-to-r from-primary to-orange-500 hover:from-primary/90 hover:to-orange-600 text-primary-foreground"
               >
@@ -327,8 +327,8 @@ const Dashboard = () => {
                       <div className="flex gap-1 ml-2">
                         <Dialog>
                           <DialogTrigger asChild>
-                            <Button 
-                              variant="ghost" 
+                            <Button
+                              variant="ghost"
                               size="sm"
                               onClick={() => openEditDialog(list)}
                               className="h-8 w-8 p-0 hover:bg-accent"
@@ -375,9 +375,9 @@ const Dashboard = () => {
 
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
+                            <Button
+                              variant="ghost"
+                              size="sm"
                               className="h-8 w-8 p-0 hover:bg-destructive/10"
                             >
                               <Trash2 className="h-4 w-4 text-destructive" />
@@ -392,7 +392,7 @@ const Dashboard = () => {
                             </AlertDialogHeader>
                             <AlertDialogFooter>
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction 
+                              <AlertDialogAction
                                 onClick={() => deleteList(list.id)}
                                 className="bg-destructive hover:bg-destructive/90"
                               >
@@ -403,13 +403,13 @@ const Dashboard = () => {
                         </AlertDialog>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center gap-2 mt-3">
                       <Badge variant="outline" className="border-primary/30 text-primary">
                         {stats.total} items
                       </Badge>
                       {stats.total > 0 && (
-                        <Badge 
+                        <Badge
                           variant={stats.percentage === 100 ? "default" : "secondary"}
                           className={stats.percentage === 100 ? "bg-green-600 dark:bg-green-500" : ""}
                         >
@@ -418,7 +418,7 @@ const Dashboard = () => {
                       )}
                     </div>
                   </CardHeader>
-                  
+
                   <CardContent>
                     {/* Add Item Form with Autocomplete */}
                     <div className="flex gap-2 mb-4">
@@ -429,7 +429,7 @@ const Dashboard = () => {
                         suggestions={commonIngredients}
                         className="flex-1"
                       />
-                      <Button 
+                      <Button
                         onClick={() => addItem(list.id)}
                         disabled={!newItemTexts[list.id]?.trim()}
                         size="sm"
@@ -447,18 +447,18 @@ const Dashboard = () => {
                         </p>
                       ) : (
                         list.items.map((item) => (
-                          <div 
-                            key={item.id} 
+                          <div
+                            key={item.id}
                             className="flex items-center gap-2 p-2 rounded-lg hover:bg-accent/50 group"
                           >
                             <Checkbox
                               checked={item.completed}
                               onCheckedChange={() => toggleItem(list.id, item.id)}
                             />
-                            <span 
+                            <span
                               className={`flex-1 text-sm ${
-                                item.completed 
-                                  ? 'line-through text-muted-foreground' 
+                                item.completed
+                                  ? 'line-through text-muted-foreground'
                                   : 'text-foreground'
                               }`}
                             >
@@ -473,12 +473,12 @@ const Dashboard = () => {
                         ))
                       )}
                     </div>
-                    
+
                     {/* Progress bar */}
                     {stats.total > 0 && (
                       <div className="mt-4">
                         <div className="w-full bg-muted rounded-full h-2">
-                          <div 
+                          <div
                             className="bg-gradient-to-r from-primary to-orange-500 h-2 rounded-full transition-all duration-300"
                             style={{ width: `${stats.percentage}%` }}
                           />

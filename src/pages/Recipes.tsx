@@ -200,16 +200,16 @@ const Recipes = () => {
           <h1 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
             AI Recipe Generator
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto dark:text-white/70">
             Discover amazing recipes with AI and automatically add ingredients
             to your shopping lists
           </p>
         </div>
 
         {/* Recipe Search Form */}
-        <Card className="border-orange-200 bg-white/80 mb-8">
+        <Card className="light:border-orange-200 bg-white/80 mb-8 dark:bg-background/90">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-gray-800">
+            <CardTitle className="flex items-center gap-2 text-gray-800 dark:text-white/90">
               <Sparkles className="h-5 w-5 text-orange-600" />
               What would you like to cook?
             </CardTitle>
@@ -221,7 +221,10 @@ const Recipes = () => {
           <CardContent>
             <div className="grid grid-cols-1 items-center gap-4">
               <div>
-                <Label htmlFor="dish" className="text-gray-800 pb-2">
+                <Label
+                  htmlFor="dish"
+                  className="text-gray-800 pb-2 dark:text-white/90"
+                >
                   Dish Name
                 </Label>
                 <Input
@@ -250,7 +253,10 @@ const Recipes = () => {
                     </>
                   )}
                 </Button>
-                <Label htmlFor="dish" className="text-gray-400 text-xs font-light">
+                <Label
+                  htmlFor="dish"
+                  className="text-gray-400 text-xs font-light dark:text-white/50"
+                >
                   Content Generated May Not Be Accurate. Proceed with Caution
                 </Label>
               </div>
@@ -260,14 +266,14 @@ const Recipes = () => {
 
         {/* Generated Recipe */}
         {currentRecipe && (
-          <Card className="border-orange-200 bg-white/80 mb-8">
+          <Card className="light:border-orange-200 bg-white/80 mb-8 dark:bg-background/90 backdrop-blur-sm">
             <CardHeader>
               <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
                 <div>
-                  <CardTitle className="text-2xl text-gray-800 mb-2">
+                  <CardTitle className="text-2xl text-gray-800 mb-2 dark:text-white/90">
                     {currentRecipe.name}
                   </CardTitle>
-                  <CardDescription className="text-gray-600">
+                  <CardDescription className="text-gray-600 dark:text-white/70">
                     {currentRecipe.description}
                   </CardDescription>
                 </div>
@@ -347,14 +353,16 @@ const Recipes = () => {
               <div className="grid md:grid-cols-2 gap-8">
                 {/* Ingredients */}
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-4 dark:text-white/90">
                     Ingredients
                   </h3>
                   <ul className="space-y-2">
                     {currentRecipe.ingredients.map((ingredient, index) => (
                       <li key={index} className="flex items-start gap-2">
                         <span className="text-orange-600 mt-1">•</span>
-                        <span className="text-gray-700">{ingredient}</span>
+                        <span className="text-gray-700 dark:text-white/80">
+                          {ingredient}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -362,7 +370,7 @@ const Recipes = () => {
 
                 {/* Instructions */}
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-4 dark:text-white/90">
                     Instructions
                   </h3>
                   <ol className="space-y-3">
@@ -371,7 +379,7 @@ const Recipes = () => {
                         <span className="flex-shrink-0 w-6 h-6 bg-gradient-to-r from-orange-500 to-red-500 text-white text-sm font-semibold rounded-full flex items-center justify-center">
                           {index + 1}
                         </span>
-                        <span className="text-gray-700 text-sm">
+                        <span className="text-gray-700 text-sm dark:text-white/80">
                           {instruction}
                         </span>
                       </li>
@@ -385,17 +393,17 @@ const Recipes = () => {
 
         {/* Popular Recipes */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 dark:text-white/90">
             Past Recipes
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
             {mockRecipes.map((recipe, index) => (
               <Card
                 key={index}
-                className="border-orange-200 hover:shadow-lg transition-shadow duration-300 bg-white/80"
+                className="light:border-orange-200 hover:shadow-lg hover:scale-110 transition-all duration-300 bg-white/80 dark:bg-background/80"
               >
                 <CardHeader>
-                  <CardTitle className="text-lg text-gray-800">
+                  <CardTitle className="text-lg text-gray-800 dark:text-white/90">
                     {recipe.name}
                   </CardTitle>
                   <CardDescription>{recipe.description}</CardDescription>
@@ -420,7 +428,7 @@ const Recipes = () => {
                   <Button
                     onClick={() => setCurrentRecipe(recipe)}
                     variant="outline"
-                    className="w-full border-orange-300 text-orange-600 hover:bg-orange-50"
+                    className="w-full border-orange-300 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/30"
                   >
                     View Recipe
                   </Button>

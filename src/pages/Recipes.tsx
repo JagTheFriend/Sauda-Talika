@@ -428,7 +428,7 @@ const Recipes = () => {
                   <Button
                     onClick={() => setCurrentRecipe(recipe)}
                     variant="outline"
-                    className="w-full border-orange-300 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-900/30"
+                    className="w-full border-orange-300 text-orange-600 hover:bg-orange-50 dark:hover:bg-orange-700"
                   >
                     View Recipe
                   </Button>

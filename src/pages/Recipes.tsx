@@ -1,46 +1,59 @@
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast"
-import { ChefHat, Clock, ListPlus, Sparkles, Users } from "lucide-react"
-import { useState } from "react"
+import { useToast } from "@/hooks/use-toast";
+import { ChefHat, Clock, ListPlus, Sparkles, Users } from "lucide-react";
+import { useState } from "react";
 
 interface Recipe {
-  name: string
-  description: string
-  ingredients: string[]
-  instructions: string[]
-  prepTime: number
-  servings: number
-  difficulty: string
+  name: string;
+  description: string;
+  ingredients: string[];
+  instructions: string[];
+  prepTime: number;
+  servings: number;
+  difficulty: string;
 }
 
 const Recipes = () => {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedCuisine, setSelectedCuisine] = useState("all")
-  const [selectedDifficulty, setSelectedDifficulty] = useState("all")
-  const [isLoading, setIsLoading] = useState(false)
-  const [currentRecipe, setCurrentRecipe] = useState<Recipe | null>(null)
-  const [newListName, setNewListName] = useState("")
-  const [isAddToListDialogOpen, setIsAddToListDialogOpen] = useState(false)
-  const { toast } = useToast()
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentRecipe, setCurrentRecipe] = useState<Recipe | null>(null);
+  const [newListName, setNewListName] = useState("");
+  const [isAddToListDialogOpen, setIsAddToListDialogOpen] = useState(false);
+  const { toast } = useToast();
 
   // Mock recipe data for demonstration
   const mockRecipes: Recipe[] = [
     {
       name: "Classic Spaghetti Carbonara",
-      description: "A traditional Italian pasta dish with eggs, cheese, and pancetta",
+      description:
+        "A traditional Italian pasta dish with eggs, cheese, and pancetta",
       ingredients: [
         "400g spaghetti",
         "200g pancetta or guanciale",
         "4 large eggs",
         "100g Pecorino Romano cheese",
         "Black pepper",
-        "Salt"
+        "Salt",
       ],
       instructions: [
         "Bring a large pot of salted water to boil and cook spaghetti",
@@ -48,15 +61,16 @@ const Recipes = () => {
         "Whisk eggs with grated cheese and black pepper",
         "Drain pasta and toss with pancetta",
         "Remove from heat and quickly stir in egg mixture",
-        "Serve immediately with extra cheese"
+        "Serve immediately with extra cheese",
       ],
       prepTime: 25,
       servings: 4,
-      difficulty: "Medium"
+      difficulty: "Medium",
     },
     {
       name: "Thai Green Curry",
-      description: "Aromatic and spicy Thai curry with coconut milk and fresh herbs",
+      description:
+        "Aromatic and spicy Thai curry with coconut milk and fresh herbs",
       ingredients: [
         "2 tbsp green curry paste",
         "400ml coconut milk",
@@ -65,7 +79,7 @@ const Recipes = () => {
         "2 Thai eggplants",
         "Fish sauce",
         "Palm sugar",
-        "Jasmine rice"
+        "Jasmine rice",
       ],
       instructions: [
         "Heat coconut milk in a pan and add curry paste",
@@ -73,28 +87,28 @@ const Recipes = () => {
         "Add eggplants and cook for 5 minutes",
         "Season with fish sauce and palm sugar",
         "Garnish with Thai basil",
-        "Serve with jasmine rice"
+        "Serve with jasmine rice",
       ],
       prepTime: 30,
       servings: 4,
-      difficulty: "Medium"
-    }
-  ]
+      difficulty: "Medium",
+    },
+  ];
 
   const generateRecipe = async () => {
     if (!searchQuery.trim()) {
       toast({
         title: "Please enter a dish name",
         description: "Tell us what you'd like to cook!",
-        variant: "destructive"
-      })
-      return
+        variant: "destructive",
+      });
+      return;
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     // Simulate AI recipe generation
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // For demo purposes, return a mock recipe based on search
     const mockRecipe: Recipe = {
@@ -108,7 +122,7 @@ const Recipes = () => {
         "Salt and pepper to taste",
         "Fresh herbs for garnish",
         "1 cup broth or stock",
-        "Additional seasonings"
+        "Additional seasonings",
       ],
       instructions: [
         "Prepare all ingredients by washing and chopping",
@@ -118,70 +132,65 @@ const Recipes = () => {
         "Season with salt, pepper, and herbs",
         "Add broth and simmer until flavors combine",
         "Adjust seasoning to taste",
-        "Serve hot and enjoy!"
+        "Serve hot and enjoy!",
       ],
       prepTime: 35,
       servings: 4,
-      difficulty: selectedDifficulty === "all" ? "Medium" : selectedDifficulty
-    }
+      difficulty: "Medium"
+    };
 
-    setCurrentRecipe(mockRecipe)
-    setIsLoading(false)
+    setCurrentRecipe(mockRecipe);
+    setIsLoading(false);
 
     toast({
       title: "Recipe generated!",
       description: `Found a great ${searchQuery} recipe for you.`,
-    })
-  }
+    });
+  };
 
   const addIngredientsToList = () => {
-    if (!currentRecipe || !newListName.trim()) return
+    if (!currentRecipe || !newListName.trim()) return;
 
     try {
       // Get existing lists from localStorage
-      const existingLists = JSON.parse(localStorage.getItem("saudaTalikaLists") || "[]")
+      const existingLists = JSON.parse(
+        localStorage.getItem("saudaTalikaLists") || "[]"
+      );
 
       // Create new list with recipe ingredients
       const newList = {
         id: Date.now().toString(),
         name: newListName,
         description: `Ingredients for ${currentRecipe.name}`,
-        items: currentRecipe.ingredients.map(ingredient => ({
+        items: currentRecipe.ingredients.map((ingredient) => ({
           id: Date.now().toString() + Math.random(),
           text: ingredient,
-          completed: false
+          completed: false,
         })),
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      }
+        updatedAt: new Date().toISOString(),
+      };
 
       // Save updated lists
-      const updatedLists = [...existingLists, newList]
-      localStorage.setItem("saudaTalikaLists", JSON.stringify(updatedLists))
+      const updatedLists = [...existingLists, newList];
+      localStorage.setItem("saudaTalikaLists", JSON.stringify(updatedLists));
 
-      setIsAddToListDialogOpen(false)
-      setNewListName("")
+      setIsAddToListDialogOpen(false);
+      setNewListName("");
 
       toast({
         title: "List created!",
         description: `"${newListName}" has been created with all recipe ingredients.`,
-      })
+      });
     } catch (error) {
-      console.error("Error saving to localStorage:", error)
+      console.error("Error saving to localStorage:", error);
       toast({
         title: "Error",
         description: "Failed to save the list. Please try again.",
-        variant: "destructive"
-      })
+        variant: "destructive",
+      });
     }
-  }
-
-  const cuisineTypes = [
-    "Italian", "Thai", "Indian", "Mexican", "Chinese", "Japanese",
-    "French", "Mediterranean", "American", "Korean"
-  ]
-
-  const difficultyLevels = ["Easy", "Medium", "Hard"]
+  };
 
   return (
     <div className="min-h-screen py-8 px-4">
@@ -241,7 +250,7 @@ const Recipes = () => {
                     </>
                   )}
                 </Button>
-                <Label htmlFor="dish" className="text-gray-400 text-[10px]">
+                <Label htmlFor="dish" className="text-gray-400 text-xs font-light">
                   Content Generated May Not Be Accurate. Proceed with Caution
                 </Label>
               </div>
@@ -423,6 +432,6 @@ const Recipes = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Recipes

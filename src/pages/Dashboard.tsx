@@ -6,7 +6,15 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -354,7 +362,12 @@ const Dashboard = () => {
                         )}
                       </div>
                       <div className="flex gap-1 ml-2">
-                        <Dialog>
+                        <Dialog
+                          open={!!editingList}
+                          onOpenChange={(e) => {
+                            setEditingList(e ? list : null);
+                          }}
+                        >
                           <DialogTrigger asChild>
                             <Button
                               variant="ghost"

@@ -9,8 +9,8 @@ export function Header() {
   const navigate = useNavigate()
 
   return (
-    <header className="h-16 border-b border-orange-200 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm flex items-center px-4 gap-4">
-      <SidebarTrigger className="text-orange-600 dark:text-orange-400 hover:bg-orange-100 dark:hover:bg-gray-800" />
+    <header className="h-16 border-b border-border bg-card/80 backdrop-blur-sm flex items-center px-4 gap-4">
+      <SidebarTrigger className="text-primary hover:bg-accent" />
       
       <Logo size="sm" />
       
@@ -21,13 +21,13 @@ export function Header() {
         <Button
           variant="outline"
           onClick={() => navigate("/dashboard")}
-          className="hidden md:flex border-orange-200 dark:border-gray-600 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-gray-800"
+          className="hidden md:flex border-border text-primary hover:bg-accent"
         >
           Dashboard
         </Button>
         <Button
           onClick={() => navigate("/recipes")}
-          className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white"
+          className="bg-gradient-to-r from-primary to-orange-500 hover:from-primary/90 hover:to-orange-600 text-primary-foreground"
         >
           Get Recipes
         </Button>

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -12,6 +13,7 @@ import { useToast } from "@/hooks/use-toast"
 import AutocompleteInput from "@/components/AutocompleteInput"
 import { commonIngredients } from "@/data/commonIngredients"
 import { Input } from "@/components/ui/input"
+import { MobileItemEditor } from "@/components/MobileItemEditor"
 
 interface ListItem {
   id: string
@@ -135,6 +137,25 @@ const Dashboard = () => {
     ))
   }
 
+  const updateItem = (listId: string, itemId: string, newText: string) => {
+    setLists(prev => prev.map(list => 
+      list.id === listId 
+        ? {
+            ...list, 
+            items: list.items.map(item => 
+              item.id === itemId ? { ...item, text: newText } : item
+            ),
+            updatedAt: new Date().toISOString()
+          }
+        : list
+    ))
+    
+    toast({
+      title: "Item updated!",
+      description: "Your item has been successfully updated.",
+    })
+  }
+
   const deleteItem = (listId: string, itemId: string) => {
     setLists(prev => prev.map(list => 
       list.id === listId 
@@ -165,15 +186,15 @@ const Dashboard = () => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary to-orange-500 bg-clip-text text-transparent">
               My Shopping Lists
             </h1>
-            <p className="text-gray-600 mt-2">Create, manage, and organize your shopping lists</p>
+            <p className="text-muted-foreground mt-2">Create, manage, and organize your shopping lists</p>
           </div>
           
           <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white">
+              <Button className="bg-gradient-to-r from-primary to-orange-500 hover:from-primary/90 hover:to-orange-600 text-primary-foreground">
                 <Plus className="h-4 w-4 mr-2" />
                 New List
               </Button>
@@ -221,49 +242,49 @@ const Dashboard = () => {
         {/* Stats Cards */}
         {lists.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <Card className="border-orange-200 bg-white/80">
+            <Card className="border-border bg-card/80 backdrop-blur-sm">
               <CardContent className="p-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center">
-                    <ListChecks className="h-5 w-5 text-white" />
+                  <div className="w-10 h-10 bg-gradient-to-r from-primary to-orange-500 rounded-full flex items-center justify-center">
+                    <ListChecks className="h-5 w-5 text-primary-foreground" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-gray-800">{lists.length}</p>
-                    <p className="text-sm text-gray-600">Total Lists</p>
+                    <p className="text-2xl font-bold text-foreground">{lists.length}</p>
+                    <p className="text-sm text-muted-foreground">Total Lists</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
             
-            <Card className="border-orange-200 bg-white/80">
+            <Card className="border-border bg-card/80 backdrop-blur-sm">
               <CardContent className="p-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center">
-                    <ShoppingCart className="h-5 w-5 text-white" />
+                  <div className="w-10 h-10 bg-gradient-to-r from-primary to-orange-500 rounded-full flex items-center justify-center">
+                    <ShoppingCart className="h-5 w-5 text-primary-foreground" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-gray-800">
+                    <p className="text-2xl font-bold text-foreground">
                       {lists.reduce((acc, list) => acc + list.items.length, 0)}
                     </p>
-                    <p className="text-sm text-gray-600">Total Items</p>
+                    <p className="text-sm text-muted-foreground">Total Items</p>
                   </div>
                 </div>
               </CardContent>
             </Card>
             
-            <Card className="border-orange-200 bg-white/80">
+            <Card className="border-border bg-card/80 backdrop-blur-sm">
               <CardContent className="p-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center">
-                    <Calendar className="h-5 w-5 text-white" />
+                  <div className="w-10 h-10 bg-gradient-to-r from-primary to-orange-500 rounded-full flex items-center justify-center">
+                    <Calendar className="h-5 w-5 text-primary-foreground" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-gray-800">
+                    <p className="text-2xl font-bold text-foreground">
                       {lists.filter(list => 
                         new Date(list.updatedAt).toDateString() === new Date().toDateString()
                       ).length}
                     </p>
-                    <p className="text-sm text-gray-600">Updated Today</p>
+                    <p className="text-sm text-muted-foreground">Updated Today</p>
                   </div>
                 </div>
               </CardContent>
@@ -273,14 +294,14 @@ const Dashboard = () => {
 
         {/* Lists Grid */}
         {lists.length === 0 ? (
-          <Card className="border-orange-200 bg-white/80">
+          <Card className="border-border bg-card/80 backdrop-blur-sm">
             <CardContent className="p-12 text-center">
-              <ListChecks className="h-16 w-16 mx-auto mb-4 text-gray-400" />
-              <h2 className="text-xl font-semibold text-gray-700 mb-2">No lists yet</h2>
-              <p className="text-gray-500 mb-6">Create your first shopping list to get started</p>
+              <ListChecks className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+              <h2 className="text-xl font-semibold text-foreground mb-2">No lists yet</h2>
+              <p className="text-muted-foreground mb-6">Create your first shopping list to get started</p>
               <Button 
                 onClick={() => setIsCreateDialogOpen(true)}
-                className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white"
+                className="bg-gradient-to-r from-primary to-orange-500 hover:from-primary/90 hover:to-orange-600 text-primary-foreground"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Create Your First List
@@ -292,13 +313,13 @@ const Dashboard = () => {
             {lists.map((list) => {
               const stats = getCompletionStats(list)
               return (
-                <Card key={list.id} className="border-orange-200 hover:shadow-lg transition-shadow duration-300 bg-white/80">
+                <Card key={list.id} className="border-border hover:shadow-lg transition-shadow duration-300 bg-card/80 backdrop-blur-sm">
                   <CardHeader className="pb-3">
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
-                        <CardTitle className="text-lg text-gray-800 mb-1">{list.name}</CardTitle>
+                        <CardTitle className="text-lg text-foreground mb-1">{list.name}</CardTitle>
                         {list.description && (
-                          <CardDescription className="text-sm text-gray-600">
+                          <CardDescription className="text-sm text-muted-foreground">
                             {list.description}
                           </CardDescription>
                         )}
@@ -310,9 +331,9 @@ const Dashboard = () => {
                               variant="ghost" 
                               size="sm"
                               onClick={() => openEditDialog(list)}
-                              className="h-8 w-8 p-0 hover:bg-orange-100"
+                              className="h-8 w-8 p-0 hover:bg-accent"
                             >
-                              <Edit2 className="h-4 w-4 text-orange-600" />
+                              <Edit2 className="h-4 w-4 text-primary" />
                             </Button>
                           </DialogTrigger>
                           <DialogContent>
@@ -357,9 +378,9 @@ const Dashboard = () => {
                             <Button 
                               variant="ghost" 
                               size="sm" 
-                              className="h-8 w-8 p-0 hover:bg-red-100"
+                              className="h-8 w-8 p-0 hover:bg-destructive/10"
                             >
-                              <Trash2 className="h-4 w-4 text-red-600" />
+                              <Trash2 className="h-4 w-4 text-destructive" />
                             </Button>
                           </AlertDialogTrigger>
                           <AlertDialogContent>
@@ -373,7 +394,7 @@ const Dashboard = () => {
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
                               <AlertDialogAction 
                                 onClick={() => deleteList(list.id)}
-                                className="bg-red-600 hover:bg-red-700"
+                                className="bg-destructive hover:bg-destructive/90"
                               >
                                 Delete
                               </AlertDialogAction>
@@ -384,13 +405,13 @@ const Dashboard = () => {
                     </div>
                     
                     <div className="flex items-center gap-2 mt-3">
-                      <Badge variant="outline" className="border-orange-300 text-orange-600">
+                      <Badge variant="outline" className="border-primary/30 text-primary">
                         {stats.total} items
                       </Badge>
                       {stats.total > 0 && (
                         <Badge 
                           variant={stats.percentage === 100 ? "default" : "secondary"}
-                          className={stats.percentage === 100 ? "bg-green-600" : ""}
+                          className={stats.percentage === 100 ? "bg-green-600 dark:bg-green-500" : ""}
                         >
                           {stats.percentage}% complete
                         </Badge>
@@ -412,7 +433,7 @@ const Dashboard = () => {
                         onClick={() => addItem(list.id)}
                         disabled={!newItemTexts[list.id]?.trim()}
                         size="sm"
-                        className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white"
+                        className="bg-gradient-to-r from-primary to-orange-500 hover:from-primary/90 hover:to-orange-600 text-primary-foreground"
                       >
                         <Plus className="h-4 w-4" />
                       </Button>
@@ -421,14 +442,14 @@ const Dashboard = () => {
                     {/* Items List */}
                     <div className="space-y-2 max-h-60 overflow-y-auto">
                       {list.items.length === 0 ? (
-                        <p className="text-gray-500 text-sm text-center py-4">
+                        <p className="text-muted-foreground text-sm text-center py-4">
                           No items yet. Add your first item above!
                         </p>
                       ) : (
                         list.items.map((item) => (
                           <div 
                             key={item.id} 
-                            className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 group"
+                            className="flex items-center gap-2 p-2 rounded-lg hover:bg-accent/50 group"
                           >
                             <Checkbox
                               checked={item.completed}
@@ -437,20 +458,17 @@ const Dashboard = () => {
                             <span 
                               className={`flex-1 text-sm ${
                                 item.completed 
-                                  ? 'line-through text-gray-500' 
-                                  : 'text-gray-700'
+                                  ? 'line-through text-muted-foreground' 
+                                  : 'text-foreground'
                               }`}
                             >
                               {item.text}
                             </span>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => deleteItem(list.id, item.id)}
-                              className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 hover:bg-red-100 transition-opacity"
-                            >
-                              <Trash2 className="h-3 w-3 text-red-600" />
-                            </Button>
+                            <MobileItemEditor
+                              item={item}
+                              onUpdate={(itemId, newText) => updateItem(list.id, itemId, newText)}
+                              onDelete={(itemId) => deleteItem(list.id, itemId)}
+                            />
                           </div>
                         ))
                       )}
@@ -459,9 +477,9 @@ const Dashboard = () => {
                     {/* Progress bar */}
                     {stats.total > 0 && (
                       <div className="mt-4">
-                        <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="w-full bg-muted rounded-full h-2">
                           <div 
-                            className="bg-gradient-to-r from-orange-500 to-red-500 h-2 rounded-full transition-all duration-300"
+                            className="bg-gradient-to-r from-primary to-orange-500 h-2 rounded-full transition-all duration-300"
                             style={{ width: `${stats.percentage}%` }}
                           />
                         </div>

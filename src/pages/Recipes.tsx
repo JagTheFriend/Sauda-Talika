@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast"
 import { ChefHat, Clock, ListPlus, Sparkles, Users } from "lucide-react"
 import { useState } from "react"
@@ -193,7 +192,8 @@ const Recipes = () => {
             AI Recipe Generator
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover amazing recipes with AI and automatically add ingredients to your shopping lists
+            Discover amazing recipes with AI and automatically add ingredients
+            to your shopping lists
           </p>
         </div>
 
@@ -205,74 +205,43 @@ const Recipes = () => {
               What would you like to cook?
             </CardTitle>
             <CardDescription>
-              Tell our AI chef what dish you're craving, and we'll create a personalized recipe for you
+              Tell our AI chef what dish you're craving, and we'll create a
+              personalized recipe for you
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div className="space-y-2">
+            <div className="grid grid-cols-1 items-center gap-4">
+              <div>
                 <Label htmlFor="dish">Dish Name</Label>
                 <Input
                   id="dish"
-                  placeholder="e.g., Chicken Tikka Masala"
+                  placeholder="e.g., Paneer Tikka Masala"
+                  className="pt-2"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && generateRecipe()}
+                  onKeyDown={(e) => e.key === "Enter" && generateRecipe()}
                 />
               </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="cuisine">Cuisine Type (Optional)</Label>
-                <Select value={selectedCuisine} onValueChange={setSelectedCuisine}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Any cuisine" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Any cuisine</SelectItem>
-                    {cuisineTypes.map(cuisine => (
-                      <SelectItem key={cuisine} value={cuisine.toLowerCase()}>
-                        {cuisine}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="difficulty">Difficulty</Label>
-                <Select value={selectedDifficulty} onValueChange={setSelectedDifficulty}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Any difficulty" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Any difficulty</SelectItem>
-                    {difficultyLevels.map(level => (
-                      <SelectItem key={level} value={level.toLowerCase()}>
-                        {level}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+              <div>
+                <Button
+                  onClick={generateRecipe}
+                  disabled={isLoading || !searchQuery.trim()}
+                  className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white"
+                >
+                  {isLoading ? (
+                    <>
+                      <Sparkles className="h-4 w-4 mr-2 animate-spin" />
+                      Generating Recipe...
+                    </>
+                  ) : (
+                    <>
+                      <ChefHat className="h-4 w-4 mr-2" />
+                      Generate Recipe
+                    </>
+                  )}
+                </Button>
               </div>
             </div>
-
-            <Button
-              onClick={generateRecipe}
-              disabled={isLoading || !searchQuery.trim()}
-              className="w-full bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white"
-            >
-              {isLoading ? (
-                <>
-                  <Sparkles className="h-4 w-4 mr-2 animate-spin" />
-                  Generating Recipe...
-                </>
-              ) : (
-                <>
-                  <ChefHat className="h-4 w-4 mr-2" />
-                  Generate Recipe
-                </>
-              )}
-            </Button>
           </CardContent>
         </Card>
 
@@ -290,7 +259,10 @@ const Recipes = () => {
                   </CardDescription>
                 </div>
 
-                <Dialog open={isAddToListDialogOpen} onOpenChange={setIsAddToListDialogOpen}>
+                <Dialog
+                  open={isAddToListDialogOpen}
+                  onOpenChange={setIsAddToListDialogOpen}
+                >
                   <DialogTrigger asChild>
                     <Button className="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white">
                       <ListPlus className="h-4 w-4 mr-2" />
@@ -301,7 +273,8 @@ const Recipes = () => {
                     <DialogHeader>
                       <DialogTitle>Create Shopping List</DialogTitle>
                       <DialogDescription>
-                        All recipe ingredients will be added to a new shopping list.
+                        All recipe ingredients will be added to a new shopping
+                        list.
                       </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4">
@@ -316,10 +289,16 @@ const Recipes = () => {
                       </div>
                     </div>
                     <DialogFooter>
-                      <Button variant="outline" onClick={() => setIsAddToListDialogOpen(false)}>
+                      <Button
+                        variant="outline"
+                        onClick={() => setIsAddToListDialogOpen(false)}
+                      >
                         Cancel
                       </Button>
-                      <Button onClick={addIngredientsToList} disabled={!newListName.trim()}>
+                      <Button
+                        onClick={addIngredientsToList}
+                        disabled={!newListName.trim()}
+                      >
                         Create List
                       </Button>
                     </DialogFooter>
@@ -328,15 +307,24 @@ const Recipes = () => {
               </div>
 
               <div className="flex flex-wrap gap-2 mt-4">
-                <Badge variant="outline" className="border-orange-300 text-orange-600">
+                <Badge
+                  variant="outline"
+                  className="border-orange-300 text-orange-600"
+                >
                   <Clock className="h-3 w-3 mr-1" />
                   {currentRecipe.prepTime} mins
                 </Badge>
-                <Badge variant="outline" className="border-orange-300 text-orange-600">
+                <Badge
+                  variant="outline"
+                  className="border-orange-300 text-orange-600"
+                >
                   <Users className="h-3 w-3 mr-1" />
                   Serves {currentRecipe.servings}
                 </Badge>
-                <Badge variant="outline" className="border-orange-300 text-orange-600">
+                <Badge
+                  variant="outline"
+                  className="border-orange-300 text-orange-600"
+                >
                   {currentRecipe.difficulty}
                 </Badge>
               </div>
@@ -346,7 +334,9 @@ const Recipes = () => {
               <div className="grid md:grid-cols-2 gap-8">
                 {/* Ingredients */}
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Ingredients</h3>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                    Ingredients
+                  </h3>
                   <ul className="space-y-2">
                     {currentRecipe.ingredients.map((ingredient, index) => (
                       <li key={index} className="flex items-start gap-2">
@@ -359,14 +349,18 @@ const Recipes = () => {
 
                 {/* Instructions */}
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Instructions</h3>
+                  <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                    Instructions
+                  </h3>
                   <ol className="space-y-3">
                     {currentRecipe.instructions.map((instruction, index) => (
                       <li key={index} className="flex gap-3">
                         <span className="flex-shrink-0 w-6 h-6 bg-gradient-to-r from-orange-500 to-red-500 text-white text-sm font-semibold rounded-full flex items-center justify-center">
                           {index + 1}
                         </span>
-                        <span className="text-gray-700 text-sm">{instruction}</span>
+                        <span className="text-gray-700 text-sm">
+                          {instruction}
+                        </span>
                       </li>
                     ))}
                   </ol>
@@ -378,19 +372,32 @@ const Recipes = () => {
 
         {/* Popular Recipes */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">Past Recipes</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6">
+            Past Recipes
+          </h2>
           <div className="grid md:grid-cols-2 gap-6">
             {mockRecipes.map((recipe, index) => (
-              <Card key={index} className="border-orange-200 hover:shadow-lg transition-shadow duration-300 bg-white/80">
+              <Card
+                key={index}
+                className="border-orange-200 hover:shadow-lg transition-shadow duration-300 bg-white/80"
+              >
                 <CardHeader>
-                  <CardTitle className="text-lg text-gray-800">{recipe.name}</CardTitle>
+                  <CardTitle className="text-lg text-gray-800">
+                    {recipe.name}
+                  </CardTitle>
                   <CardDescription>{recipe.description}</CardDescription>
                   <div className="flex gap-2 mt-2">
-                    <Badge variant="outline" className="border-orange-300 text-orange-600">
+                    <Badge
+                      variant="outline"
+                      className="border-orange-300 text-orange-600"
+                    >
                       <Clock className="h-3 w-3 mr-1" />
                       {recipe.prepTime} mins
                     </Badge>
-                    <Badge variant="outline" className="border-orange-300 text-orange-600">
+                    <Badge
+                      variant="outline"
+                      className="border-orange-300 text-orange-600"
+                    >
                       <Users className="h-3 w-3 mr-1" />
                       Serves {recipe.servings}
                     </Badge>
@@ -411,7 +418,7 @@ const Recipes = () => {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default Recipes

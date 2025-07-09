@@ -1,12 +1,26 @@
 
-import { useState } from "react"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
-import { Edit2, Trash2, Save, X } from "lucide-react"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { useIsMobile } from "@/hooks/use-mobile"
+import { Edit2, Save, Trash2, X } from "lucide-react";
+import { useState } from "react";
 
 interface ListItem {
   id: string
@@ -92,32 +106,15 @@ export function MobileItemEditor({ item, onUpdate, onDelete }: MobileItemEditorP
         <Trash2 className="h-3 w-3 text-destructive" />
       </Button>
 
-      {/* Edit Dialog/Sheet */}
-      {isMobile ? (
-        <Sheet open={isEditOpen} onOpenChange={setIsEditOpen}>
-          <SheetContent side="bottom" className="p-6">
-            <SheetHeader className="mb-4">
-              <SheetTitle>Edit Item</SheetTitle>
-              <SheetDescription>
-                Update the item name below.
-              </SheetDescription>
-            </SheetHeader>
-            <EditContent />
-          </SheetContent>
-        </Sheet>
-      ) : (
-        <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Edit Item</DialogTitle>
-              <DialogDescription>
-                Update the item name below.
-              </DialogDescription>
-            </DialogHeader>
-            <EditContent />
-          </DialogContent>
-        </Dialog>
-      )}
+      <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Item</DialogTitle>
+            <DialogDescription>Update the item name below.</DialogDescription>
+          </DialogHeader>
+          <EditContent />
+        </DialogContent>
+      </Dialog>
 
       {/* Delete Confirmation */}
       <AlertDialog open={isDeleteOpen} onOpenChange={setIsDeleteOpen}>
@@ -125,17 +122,21 @@ export function MobileItemEditor({ item, onUpdate, onDelete }: MobileItemEditorP
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Item</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete "{item.text}"? This action cannot be undone.
+              Are you sure you want to delete "{item.text}"? This action cannot
+              be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="bg-destructive hover:bg-destructive/90">
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-destructive hover:bg-destructive/90"
+            >
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     </div>
-  )
+  );
 }

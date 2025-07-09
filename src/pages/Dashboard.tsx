@@ -1,8 +1,6 @@
-
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
@@ -11,6 +9,9 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Plus, Edit2, Trash2, ListChecks, Calendar, ShoppingCart } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
+import AutocompleteInput from "@/components/AutocompleteInput"
+import { commonIngredients } from "@/data/commonIngredients"
+import { Input } from "@/components/ui/input"
 
 interface ListItem {
   id: string
@@ -33,7 +34,7 @@ const Dashboard = () => {
   const [editingList, setEditingList] = useState<ShoppingList | null>(null)
   const [newListName, setNewListName] = useState("")
   const [newListDescription, setNewListDescription] = useState("")
-  const [newItemText, setNewItemText] = useState("")
+  const [newItemTexts, setNewItemTexts] = useState<{[key: string]: string}>({})
   const { toast } = useToast()
 
   // Load lists from localStorage on component mount
@@ -102,11 +103,12 @@ const Dashboard = () => {
   }
 
   const addItem = (listId: string) => {
-    if (!newItemText.trim()) return
+    const itemText = newItemTexts[listId]
+    if (!itemText?.trim()) return
 
     const newItem: ListItem = {
       id: Date.now().toString(),
-      text: newItemText,
+      text: itemText,
       completed: false
     }
 
@@ -116,7 +118,7 @@ const Dashboard = () => {
         : list
     ))
 
-    setNewItemText("")
+    setNewItemTexts(prev => ({ ...prev, [listId]: "" }))
   }
 
   const toggleItem = (listId: string, itemId: string) => {
@@ -397,22 +399,18 @@ const Dashboard = () => {
                   </CardHeader>
                   
                   <CardContent>
-                    {/* Add Item Form */}
+                    {/* Add Item Form with Autocomplete */}
                     <div className="flex gap-2 mb-4">
-                      <Input
-                        placeholder="Add item..."
-                        value={newItemText}
-                        onChange={(e) => setNewItemText(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            addItem(list.id)
-                          }
-                        }}
+                      <AutocompleteInput
+                        value={newItemTexts[list.id] || ""}
+                        onChange={(value) => setNewItemTexts(prev => ({ ...prev, [list.id]: value }))}
+                        onSubmit={() => addItem(list.id)}
+                        suggestions={commonIngredients}
                         className="flex-1"
                       />
                       <Button 
                         onClick={() => addItem(list.id)}
-                        disabled={!newItemText.trim()}
+                        disabled={!newItemTexts[list.id]?.trim()}
                         size="sm"
                         className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white"
                       >

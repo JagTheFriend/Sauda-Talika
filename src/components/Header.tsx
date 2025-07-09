@@ -1,21 +1,16 @@
 
-import { SidebarTrigger } from "@/components/ui/sidebar"
-import { Button } from "@/components/ui/button"
-import { useNavigate } from "react-router-dom"
-import { ThemeToggle } from "./ThemeToggle"
-import { Logo } from "./Logo"
+import { Button } from "@/components/ui/button";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useNavigate } from "react-router-dom";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function Header() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <header className="h-16 border-b border-border bg-card/80 backdrop-blur-sm flex items-center px-4 gap-4">
       <SidebarTrigger className="text-primary hover:bg-accent" />
-      
-      <Logo size="sm" />
-      
       <div className="flex-1" />
-      
       <div className="flex items-center gap-2">
         <ThemeToggle />
         <Button
@@ -33,5 +28,5 @@ export function Header() {
         </Button>
       </div>
     </header>
-  )
+  );
 }

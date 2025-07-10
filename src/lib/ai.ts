@@ -53,7 +53,7 @@ SEPARATE EACH SECTION WITH "----".
 
 const url = "https://openrouter.ai/api/v1/chat/completions";
 const headers = {
-  Authorization: `Bearer ${import.meta.env.VITE_OPENROUTER_API_KEY}`,
+  Authorization: `Bearer ${import.meta.env.VITE_PUBLIC_OPENROUTER_API_KEY}`,
   "Content-Type": "application/json",
 };
 

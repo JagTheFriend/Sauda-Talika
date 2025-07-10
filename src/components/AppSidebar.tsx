@@ -9,6 +9,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { ChefHat, Home, Info, LayoutDashboard, Phone } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 
@@ -23,6 +24,7 @@ const items = [
 export function AppSidebar() {
   const { state } = useSidebar();
   const location = useLocation();
+  const isMobile = useIsMobile();
   const currentPath = location.pathname;
 
   const isActive = (path: string) => {
@@ -43,11 +45,24 @@ export function AppSidebar() {
     >
       <SidebarContent>
         {state === "collapsed" && (
-          <div className="border-b m-4 border-orange-200 dark:border-gray-700 flex items-center gap-3 justify-center">
-            <div className="aspect-square w-8 h-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">ST</span>
-            </div>
-          </div>
+          <>
+            {!isMobile ? (
+              <div className="border-b m-1 h-12 border-orange-200 dark:border-gray-700 flex items-center gap-3 justify-center">
+                <div className="w-full h-full bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-sm p-2">ST </span>
+                </div>
+              </div>
+            ) : (
+              <div className="p-4 border-b border-orange-200 dark:border-gray-700 gap-3">
+                <h2 className="text-lg font-bold text-gray-800 dark:text-gray-200">
+                  Sauda Talika
+                </h2>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  Easy Shopping List
+                </p>
+              </div>
+            )}
+          </>
         )}
         {state !== "collapsed" && (
           <div className="p-4 border-b border-orange-200 dark:border-gray-700 gap-3">

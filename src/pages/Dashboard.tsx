@@ -21,6 +21,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { commonIngredients } from "@/data/commonIngredients"
 import { useToast } from "@/hooks/use-toast"
 import { Calendar, Edit2, ListChecks, Plus, ShoppingCart, Trash2 } from "lucide-react"
+import posthog from "posthog-js"
 import { useEffect, useState } from "react"
 
 interface ListItem {
@@ -44,7 +45,7 @@ const Dashboard = () => {
   const [editingList, setEditingList] = useState<ShoppingList | null>(null)
   const [newListName, setNewListName] = useState("")
   const [newListDescription, setNewListDescription] = useState("")
-  const [newItemTexts, setNewItemTexts] = useState<{[key: string]: string}>({})
+  const [newItemTexts, setNewItemTexts] = useState<{ [key: string]: string }>({})
   const { toast } = useToast()
 
   // Load lists from localStorage on component mount
@@ -53,6 +54,11 @@ const Dashboard = () => {
     if (savedLists) {
       setLists(JSON.parse(savedLists))
     }
+
+    posthog.capture("Load Shopping Lists", {
+      "list_count": lists.length
+    });
+
   }, [])
 
   // Save lists to localStorage whenever lists change
@@ -72,6 +78,11 @@ const Dashboard = () => {
       updatedAt: new Date().toISOString()
     }
 
+    posthog.capture("Create Shopping List", {
+      "list_name": newListName,
+      "list_description": newListDescription
+    });
+
     setLists(prev => [...prev, newList])
     setNewListName("")
     setNewListDescription("")
@@ -85,6 +96,12 @@ const Dashboard = () => {
 
   const updateList = () => {
     if (!editingList || !newListName.trim()) return
+
+    posthog.capture("Update Shopping List", {
+      "list_name": newListName,
+      "list_description": newListDescription
+    });
+
 
     setLists(prev => prev.map(list =>
       list.id === editingList.id
@@ -104,6 +121,12 @@ const Dashboard = () => {
 
   const deleteList = (listId: string) => {
     const listToDelete = lists.find(list => list.id === listId)
+
+    posthog.capture("Delete Shopping List", {
+      "list_name": listToDelete?.name,
+      "list_description": listToDelete?.description
+    });
+
     setLists(prev => prev.filter(list => list.id !== listId))
 
     toast({
@@ -122,6 +145,11 @@ const Dashboard = () => {
       completed: false
     }
 
+    posthog.capture("Add Item to List", {
+      "list_name": lists.find(list => list.id === listId)?.name,
+      "item_text": itemText,
+    })
+
     setLists(prev => prev.map(list =>
       list.id === listId
         ? { ...list, items: [...list.items, newItem], updatedAt: new Date().toISOString() }
@@ -135,26 +163,31 @@ const Dashboard = () => {
     setLists(prev => prev.map(list =>
       list.id === listId
         ? {
-            ...list,
-            items: list.items.map(item =>
-              item.id === itemId ? { ...item, completed: !item.completed } : item
-            ),
-            updatedAt: new Date().toISOString()
-          }
+          ...list,
+          items: list.items.map(item =>
+            item.id === itemId ? { ...item, completed: !item.completed } : item
+          ),
+          updatedAt: new Date().toISOString()
+        }
         : list
     ))
   }
 
   const updateItem = (listId: string, itemId: string, newText: string) => {
+    posthog.capture("Update Item in List", {
+      "list_name": lists.find(list => list.id === listId)?.name,
+      "item_text": newText,
+    })
+
     setLists(prev => prev.map(list =>
       list.id === listId
         ? {
-            ...list,
-            items: list.items.map(item =>
-              item.id === itemId ? { ...item, text: newText } : item
-            ),
-            updatedAt: new Date().toISOString()
-          }
+          ...list,
+          items: list.items.map(item =>
+            item.id === itemId ? { ...item, text: newText } : item
+          ),
+          updatedAt: new Date().toISOString()
+        }
         : list
     ))
 
@@ -168,10 +201,10 @@ const Dashboard = () => {
     setLists(prev => prev.map(list =>
       list.id === listId
         ? {
-            ...list,
-            items: list.items.filter(item => item.id !== itemId),
-            updatedAt: new Date().toISOString()
-          }
+          ...list,
+          items: list.items.filter(item => item.id !== itemId),
+          updatedAt: new Date().toISOString()
+        }
         : list
     ))
   }
@@ -532,11 +565,10 @@ const Dashboard = () => {
                               }
                             />
                             <span
-                              className={`flex-1 text-sm ${
-                                item.completed
-                                  ? "line-through text-muted-foreground"
-                                  : "text-foreground"
-                              }`}
+                              className={`flex-1 text-sm ${item.completed
+                                ? "line-through text-muted-foreground"
+                                : "text-foreground"
+                                }`}
                             >
                               {item.text}
                             </span>

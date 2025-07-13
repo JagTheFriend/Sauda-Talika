@@ -46,6 +46,7 @@ import {
   Trash2,
   Users,
 } from "lucide-react";
+import posthog from "posthog-js";
 import { useState } from "react";
 
 export interface Recipe {
@@ -287,6 +288,10 @@ const Recipes = () => {
   const generateRecipeFunc = async () => {
     setCurrentRecipe(null);
 
+    posthog.capture("AI Generate Recipe", {
+      "dish_name": searchQuery
+    });
+
     if (!searchQuery.trim()) {
       toast({
         title: "Please enter a dish name",
@@ -315,6 +320,11 @@ const Recipes = () => {
 
   const addIngredientsToList = () => {
     if (!currentRecipe || !newListName.trim()) return;
+
+    posthog.capture("Add Recipe Ingredients to List", {
+      "recipe_name": currentRecipe.name,
+      "list_name": newListName
+    });
 
     try {
       // Get existing lists from localStorage

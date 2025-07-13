@@ -15,6 +15,7 @@ import Dashboard from "./pages/Dashboard";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Recipes from "./pages/Recipes";
+import PostHogAnalytics from "./hooks/Posthog-Analytics";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <SidebarProvider defaultOpen={false}>
+            <PostHogAnalytics />
             <div className="min-h-screen flex w-full bg-gradient-to-br from-orange-50 via-red-50 to-pink-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-800">
               <AppSidebar />
               <div className="flex-1 flex flex-col">
